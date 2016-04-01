@@ -15,14 +15,17 @@ public partial class StoredProcedures
 "left Join Rents ON Member_Rent_ID_FK = Member_ID "+
 "join Movies ON Movie_ID = Movie_ID_FK "+
 " AND Return_Date = @date");
-            SqlParameter DatePAram = new SqlParameter();
-            DatePAram.DbType = DbType.DateTime;
-            DatePAram.Value = Date;
-            DatePAram.ParameterName = "@date";
-            cmd.Parameters.Add(Date);
             conn.Open();
+            SqlParameter DatePAram = new SqlParameter();
+            cmd.Parameters.AddWithValue("@date", Date);
+            //DatePAram.DbType = System.Data.DbType.DateTime;
+            //DatePAram.Value = DateTime.Now;
+            //DatePAram.ParameterName = "@date";
+            //cmd.Parameters.Add(Date);
+            
             SqlDataReader sqldr = cmd.ExecuteReader();
             SqlContext.Pipe.Send(sqldr);
+            sqldr.Close();
             conn.Close();
 
         }
